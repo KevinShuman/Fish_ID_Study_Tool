@@ -113,6 +113,12 @@ class Study_Session:
         return species_dict
         
     def mk_group_species_classes(self, group_name, species_dict):
+        '''
+        Creates a Group class object for the given group name and creates a list of Species class objects
+        for each species of that group
+
+        returns Group class object and list of Species class objects
+        '''
         species_class_list = []
         group_var = vars() 
         species_list = species_dict[group_name].keys()
@@ -138,14 +144,17 @@ class Study_Session:
         return group_var[group_name.replace(" ","_")], species_class_list
 
     def begin_study_sess(self):
+        '''
+        Begins a study session where one practices identifying species
+        '''
         CURRENT_DIRECT = os.getcwd()
         IMAGE_PATH = os.path.join(CURRENT_DIRECT,"images","Quail.png")
-        appearance = "Hi"
-        dist_feat= "Hello"
+        appearance = ""
+        dist_feat= ""
         species_dict = self.grab_groups_species()
         group_list = species_dict.keys()
 
-        # All the stuff inside your window.
+        # Creating intro window
         layout_intro = [
                         [sg.Text('Welcome to The Indo Ocean Study Tool! This tool is here to help you study various aquatic species for your internship with Indo Ocean.')],
                         [sg.Text('\nThe way this will work is by showing you images of different species and you identifying them.\nThere are two modes: \n\n1.) Easy: Multiple choice \n2.) Hard: Type in the species name\n')],
@@ -153,6 +162,7 @@ class Study_Session:
                         [sg.Button('Next', key='Next')]
                         ]
 
+        # Creating study window with two sections: a options/input side and an image side
         layout_left = [ 
                         [sg.Text('First, choose your difficulty.'), sg.Checkbox('Easy', default=False, key='-Easy-'), sg.Checkbox('Hard', default=False, key='-Hard-')],
                         [sg.Text('\nNext, choose the groups of species you would like to study.')]]
@@ -166,7 +176,7 @@ class Study_Session:
         layout_left.append(checkbox_list)
         layout_left.append([sg.Text('\nWhen you are ready to begin, press the "Start" button below.')])
         layout_left.append([sg.Button('Start', key='-Start-')])
-        layout_left.append([sg.Output(visible=True, key='-Species Output-')])
+        #layout_left.append([sg.Output(visible=True, key='-Species Output-')])
         layout_left.append([sg.Text('\nBelow, type the species in the image to the right.', visible=False, key='-Species Input Text-')])
         layout_left.append([sg.Input(visible=False, key='-Species Input-')])
         layout_left.append([sg.Button('Submit', key='-Submit-'), sg.Button('Next', key='-Next Species-')])
@@ -182,24 +192,26 @@ class Study_Session:
                      sg.VerticalSeparator(),
                     sg.Column(layout_right)]
                     ]
-        # Create the Window
+        # Initalizing intro window
         window_intro = sg.Window('Indo Ocean Study Tool: Intro', layout_intro)
+
         # Event Loop to process "events" and get the "values" of the inputs
         while True:
             event_intro, values_intro = window_intro.read()
-            if event_intro == sg.WIN_CLOSED or event_intro == 'Next': # if user closes window or clicks cancel
+            if event_intro == sg.WIN_CLOSED or event_intro == 'Next': # closes window if user closes window of clicks "Next"
                 break
-
         window_intro.close()
 
-        # Create the Window
+        #Initalizing study window
         window_study = sg.Window('Indo Ocean Study Tool', layout_study, size=(500,500))
-        # Event Loop to process "events" and get the "values" of the inputs
+
         correct_count = 0
         count = 0
-        while True:
+        end_game = False
+        # Study window while loop
+        while end_game != True:
             event, values = window_study.read()
-            if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
+            if event == sg.WIN_CLOSED: # closes window if user closes window
                 break
             
             # Checking whether student chooses easy, hard, both, or neither
@@ -218,30 +230,36 @@ class Study_Session:
                 easy = False
                 hard = True
 
-            group_buttons = []
+            # Creating list of all checkboxes names 
+            group_checkboxes = []
             for group in group_list:
-                group_buttons.append(values['-{}-'.format(group)])
+                group_checkboxes.append(values['-{}-'.format(group)])
 
+            # From all the checked checkboxes, generates a list Species class objects for all species
             group_class_var = vars()
             species_class_list_var = vars()
             full_species_list = []
-            for (group_button, group) in zip(group_buttons, group_list):
+            for (group_button, group) in zip(group_checkboxes, group_list):
                 if group_button==True:
                     group_class_var[group] , species_class_list_var[group] = self.mk_group_species_classes(group, species_dict)
                     full_species_list.extend(species_class_list_var[group])
 
+            # If you didn't check anything
             if not full_species_list:
                 print('Make sure to choose a group of species!')
                 continue
 
+            # If you checked the easy option, this starts a multiple choice version of the study sessionn
             if easy == True:
+                # If you press "Start" or "Next Species", this does another run
                 if event == '-Start-' or event == '-Next Species-':
-                    window_study["-Species Output-"].update(visible=True)
+                    #window_study["-Species Output-"].update(visible=True)
                     window_study["-Species Input Text-"].update(visible=True)
                     window_study["-Species Input-"].update(visible=True)
                     window_study['-Appearance-'].update(visible=False)
                     window_study['-Distinguishing Feature-'].update(visible=False)
 
+                    # Get 4 random species from our list
                     mult_choice = select_random_Ns(full_species_list,4)
                     multi_group = []
                     multi_name = []
@@ -249,28 +267,44 @@ class Study_Session:
                         multi_group.append(choice.group)
                         multi_name.append(choice.name)
                     
+                    # Gets random image for the chosen species
+                    correct_answer = mult_choice[0]
+                    IMAGE_PATH = correct_answer.get_rand_image_path()
+
+                    # Shuffles list of species
+                    random.shuffle(multi_name)
 
                     print("One of the species listed below is that shown in the image. Which one is it?\n")
                     for name in multi_name:
                         print(name)
                     print("\n")
-                    IMAGE_PATH = mult_choice[0].get_rand_image_path()
+
+                    # The images are all different sizes, some of them are too big, so this dimisses
+                    # images that are too large
                     img = PIL.Image.open(IMAGE_PATH)
                     wid, hgt = img.size
                     if wid>=2000 or hgt>=1200:
                         continue
+
+                    # Updates the image
                     window_study['-Species Image-'].update(filename=IMAGE_PATH)
+
+                # When you click "Submit" you are checked if you are correct or not
                 if event == '-Submit-':
                     count += 1
                     answer = values['-Species Input-']
-                    if answer == multi_name[0]:
+
+                    # Checks if your answer is correct
+                    if answer == correct_answer.name:
                         correct_count += 1
                         print("That's correct! {}/{}\n".format(correct_count, count))
                     if answer == "quit":
                         end_game = True
-                    if answer != multi_name[0]:
-                        print("Nope! The correct answer is {}. {}/{}\n".format(multi_name[0], correct_count, count))
-                        appearance_text = mult_choice[0].appearance
+                    if answer != correct_answer.name:
+                        print("Nope! The correct answer is {}. {}/{}\n".format(correct_answer.name, correct_count, count))
+
+                        # If you are wrong, we get a prompt that tells us info about the species to help us learn
+                        appearance_text = correct_answer.appearance
                         text_loops = math.floor(len(appearance_text)/80)
 
                         if len(appearance_text)>80:
@@ -282,17 +316,19 @@ class Study_Session:
                             window_study['-Appearance-'].update(value=appearance)
                         else:
                             window_study['-Appearance-'].update(value="Appearance: \n" + appearance_text + "\n")
-                        window_study['-Distinguishing Feature-'].update(value="Distinguishing Features: " + "\n" + mult_choice[0].dist_feats)
+                        window_study['-Distinguishing Feature-'].update(value="Distinguishing Features: " + "\n" + correct_answer.dist_feats)
                         window_study['-Appearance-'].update(visible = True)
                         window_study['-Distinguishing Feature-'].update(visible = True)
             if hard == True:
+                # If you press "Start" or "Next Species", this does another run
                 if event == '-Start-' or event == '-Next Species-':
-                    window_study["-Species Output-"].update(visible=True)
+                    #window_study["-Species Output-"].update(visible=True)
                     window_study["-Species Input Text-"].update(visible=True)
                     window_study["-Species Input-"].update(visible=True)
                     window_study['-Appearance-'].update(visible=False)
                     window_study['-Distinguishing Feature-'].update(visible=False)
 
+                    # Gets a random species class object from our list of species
                     mult_choice = select_random_Ns(full_species_list,1)
                     multi_group = []
                     multi_name = []
