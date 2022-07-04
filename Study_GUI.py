@@ -176,7 +176,7 @@ class Study_Session:
         layout_left.append(checkbox_list)
         layout_left.append([sg.Text('\nWhen you are ready to begin, press the "Start" button below.')])
         layout_left.append([sg.Button('Start', key='-Start-')])
-        #layout_left.append([sg.Output(visible=True, key='-Species Output-')])
+        layout_left.append([sg.Output(visible=True, key='-Species Output-')])
         layout_left.append([sg.Text('\nBelow, type the species in the image to the right.', visible=False, key='-Species Input Text-')])
         layout_left.append([sg.Input(visible=False, key='-Species Input-')])
         layout_left.append([sg.Button('Submit', key='-Submit-'), sg.Button('Next', key='-Next Species-')])
@@ -253,7 +253,7 @@ class Study_Session:
             if easy == True:
                 # If you press "Start" or "Next Species", this does another run
                 if event == '-Start-' or event == '-Next Species-':
-                    #window_study["-Species Output-"].update(visible=True)
+                    window_study["-Species Output-"].update(visible=True)
                     window_study["-Species Input Text-"].update(visible=True)
                     window_study["-Species Input-"].update(visible=True)
                     window_study['-Appearance-'].update(visible=False)
@@ -322,7 +322,7 @@ class Study_Session:
             if hard == True:
                 # If you press "Start" or "Next Species", this does another run
                 if event == '-Start-' or event == '-Next Species-':
-                    #window_study["-Species Output-"].update(visible=True)
+                    window_study["-Species Output-"].update(visible=True)
                     window_study["-Species Input Text-"].update(visible=True)
                     window_study["-Species Input-"].update(visible=True)
                     window_study['-Appearance-'].update(visible=False)
