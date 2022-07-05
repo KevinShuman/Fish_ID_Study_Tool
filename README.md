@@ -3,13 +3,11 @@ So you like fish, turtles, water critters, but you don't know how to identify th
 
 If you want to jump into things without thinking too much about it, you should probably do the following real quick for me.
 
-Take a look at these dependencies and be honest, do you have these?
+Take a look at these dependencies and be honest, do you have the libraries in the requirements.txt file?
 
-    PySimpleGUIQt, PIL
+Are you sure? If you don't, that's okay, but you should probably get them if you want to get this to work.
 
- Are you sure? If you don't, that's okay, but you should probably get them if you want to get this to work.
-
- Alright, assuming you have those, you need to git the code. Easy. Find a happy place on your computer and while in the cozy directory on your terminal type
+Alright, let's assume you have those, you need to git the code. Easy. Find a happy place on your computer and while in the cozy directory on your terminal type
 
     git clone https://github.com/KevinShuman/Fish_ID_Study_Tool.git
 
