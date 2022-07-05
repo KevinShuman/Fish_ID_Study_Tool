@@ -92,7 +92,7 @@ class Study_Session:
 
     def grab_groups_species(self):
         '''
-        From the current directory, this function uses the folder names of the directories in images
+        From the current directory, this function uses the names of the directories in images
         to obtain a dictionary of the of species for each group along with information associated with
         each species
 
@@ -292,15 +292,15 @@ class Study_Session:
                 # When you click "Submit" you are checked if you are correct or not
                 if event == '-Submit-':
                     count += 1
-                    answer = values['-Species Input-']
+                    answer = values['-Species Input-'].lower()
 
                     # Checks if your answer is correct
-                    if answer == correct_answer.name:
+                    if answer == correct_answer.name.lower():
                         correct_count += 1
                         print("That's correct! {}/{}\n".format(correct_count, count))
                     if answer == "quit":
                         end_game = True
-                    if answer != correct_answer.name:
+                    if answer != correct_answer.name.lower():
                         print("Nope! The correct answer is {}. {}/{}\n".format(correct_answer.name, correct_count, count))
 
                         # If you are wrong, we get a prompt that tells us info about the species to help us learn
@@ -347,13 +347,13 @@ class Study_Session:
                     window_study['-Species Image-'].update(filename=IMAGE_PATH)
                 if event == '-Submit-':
                     count += 1
-                    answer = values['-Species Input-']
-                    if answer == multi_name[0]:
+                    answer = values['-Species Input-'].lower()
+                    if answer == multi_name[0].lower():
                         correct_count += 1
                         print("That's correct! {}/{}\n".format(correct_count, count))
                     if answer == "quit":
                         end_game = True
-                    if answer != multi_name[0]:
+                    if answer != multi_name[0].lower():
                         print("Nope! The correct answer is {}. {}/{}\n".format(multi_name[0], correct_count, count))
                         appearance_text = mult_choice[0].appearance
                         text_loops = math.floor(len(appearance_text)/80)
