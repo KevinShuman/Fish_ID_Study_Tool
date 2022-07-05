@@ -84,3 +84,16 @@ Opening the source code Study_GUI.py, you'll see different classes that make up 
 ## How the Information is Stored
 
 Looking at the grab_groups_species() and read_species_csv() functions in the Study Session class one could figure out that all the information is stored in the images directory. Information about each species is contained in a CSV file in each species directory along with all the images of that species. What species and what groups that are used are contained in the directory names within images. This makes adding species and groups pretty easy. Simply add a a new group or species directory, a CSV of the same form as the others, and the images associated with that species.
+
+# To-Do
+-An encyclopedia of all the species in the GUI that uses the dictionary of all the species
+
+-If there is a possiblilty to have videos for the encyclopedia, that would be neat
+
+-The ability to add/remove new species/groups from the GUI
+
+-Need a minimum of 4 species in a group for easy mode, need a warning for this or it will crash
+
+-The images changing size is kind of distracting, it would be nice to keep things static, though we don't want to mess with image quality
+
+-More unique images using a webscapper
