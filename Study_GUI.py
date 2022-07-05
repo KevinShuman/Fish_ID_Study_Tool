@@ -65,17 +65,21 @@ class Group:
     and all the species within that group
 
     :param name (str): The name of the group
+    :param species (list): List of Species class objects
     '''
-    species = []
 
-    def __init__(self, name, species):
+    def __init__(self, name, species=[]):
         self.name = name
         self.species = species
 
-    def add_species(self, a_species, species):
-        species.append(a_species)
+    def add_species(self, a_species):
+        self.species.append(a_species)
 
 class Study_Session:
+    '''
+    The environment everything plays in. Contains routines that create the study tool
+    '''
+
     def read_species_csv(self, path):
         '''
         Creates dictionary with info on species from csv file at the given path
@@ -156,7 +160,7 @@ class Study_Session:
 
         # Creating intro window
         layout_intro = [
-                        [sg.Text('Welcome to The Indo Ocean Study Tool! This tool is here to help you study various aquatic species for your internship with Indo Ocean.')],
+                        [sg.Text('Welcome to The Species Study Tool! This tool is here to help you study various aquatic species.')],
                         [sg.Text('\nThe way this will work is by showing you images of different species and you identifying them.\nThere are two modes: \n\n1.) Easy: Multiple choice \n2.) Hard: Type in the species name\n')],
                         [sg.Text('When you are ready to begin setting up, press Next')],
                         [sg.Button('Next', key='Next')]
@@ -193,7 +197,7 @@ class Study_Session:
                     sg.Column(layout_right)]
                     ]
         # Initalizing intro window
-        window_intro = sg.Window('Indo Ocean Study Tool: Intro', layout_intro)
+        window_intro = sg.Window('Species Study Tool: Intro', layout_intro)
 
         # Event Loop to process "events" and get the "values" of the inputs
         while True:
@@ -203,7 +207,7 @@ class Study_Session:
         window_intro.close()
 
         #Initalizing study window
-        window_study = sg.Window('Indo Ocean Study Tool', layout_study, size=(500,500))
+        window_study = sg.Window('Species Study Tool', layout_study, size=(500,500))
 
         correct_count = 0
         count = 0
