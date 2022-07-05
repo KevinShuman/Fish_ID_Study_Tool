@@ -94,6 +94,6 @@ Looking at the grab_groups_species() and read_species_csv() functions in the Stu
 
 -Need a minimum of 4 species in a group for easy mode, need a warning for this or it will crash
 
--The images changing size is kind of distracting, it would be nice to keep things static, though we don't want to mess with image quality
+-~~The images changing size is kind of distracting, it would be nice to keep things static, though we don't want to mess with image quality~~
 
 -More unique images using a webscapper

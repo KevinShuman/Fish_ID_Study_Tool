@@ -2,7 +2,7 @@ import PySimpleGUIQt as sg
 import random
 import os
 import PIL
-from PIL import Image
+from PIL import Image, ImageOps
 import math
 import csv
 from pathlib import Path
@@ -10,6 +10,11 @@ from pathlib import Path
 def select_random_Ns(lst, n):
     random.shuffle(lst)
     return lst[0:n]
+
+def reshape_image(path, x_size, y_size, fill_color):
+        im = Image.open(path)
+        im = ImageOps.pad(im, (x_size, y_size), color=fill_color)
+        im.save(path)
 
 class Species:
     '''
@@ -56,6 +61,7 @@ class Species:
         SPECIES_PATH = self.get_path()
         species_list = [os.path.join(SPECIES_PATH,f) for f in os.listdir(SPECIES_PATH) if os.path.isfile(os.path.join(SPECIES_PATH, f)) and os.path.join(SPECIES_PATH, f)[-4:] != "xlsx" and os.path.join(SPECIES_PATH, f)[-3:] != "csv"]
         IMAGE_PATH = random.choice(species_list)
+        reshape_image(IMAGE_PATH, 1000, 1000, "black")
         return IMAGE_PATH
 
 
