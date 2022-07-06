@@ -6,7 +6,6 @@ from PIL import Image, ImageOps
 import math
 import csv
 from pathlib import Path
-import time
 
 def wrap_text(text, wrap_length=80):
     wrapped_text = ''
@@ -320,7 +319,6 @@ class Study_Session:
                 if event == '-Submit-':
                     count += 1
                     answer = values['-Species Input-'].lower()
-                    import sys
                     # Checks if your answer is correct
                     if answer == correct_answer.name.lower():
                         correct_count += 1
