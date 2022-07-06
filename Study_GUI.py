@@ -10,7 +10,7 @@ from pathlib import Path
 def wrap_text(text, wrap_length=80):
     wrapped_text = ''
     if len(text)>wrap_length:
-        while text != "":
+        while text != '':
             if len(text) > wrap_length:
                 if text[wrap_length-1].isalnum() and text[wrap_length].isalnum():
                     word_index = text[0:wrap_length-1].rfind(' ')
@@ -329,7 +329,6 @@ class Study_Session:
                         print("Nope! The correct answer is {}. {}/{}\n".format(correct_answer.name, correct_count, count))
                         # If you are wrong, we get a prompt that tells us info about the species to help us learn
                         appearance_text = correct_answer.appearance
-                        text_loops = math.floor(len(appearance_text)/80)
                         appearance = ''
                         wrap_length = 80
                         if len(appearance_text)>wrap_length:
@@ -339,7 +338,7 @@ class Study_Session:
                             window_study['-Appearance-'].update(value=appearance)
                         else:
                             window_study['-Appearance-'].update(value="Appearance: \n" + appearance_text + "\n")
-                        window_study['-Distinguishing Feature-'].update(value="Distinguishing Features: " + "\n" + correct_answer.dist_feats)
+                        window_study['-Distinguishing Feature-'].update(value="\nDistinguishing Features: " + "\n" + correct_answer.dist_feats)
                         window_study['-Appearance-'].update(visible = True)
                         window_study['-Distinguishing Feature-'].update(visible = True)
             if hard == True:
@@ -379,16 +378,16 @@ class Study_Session:
                     if answer != multi_name[0].lower():
                         print("Nope! The correct answer is {}. {}/{}\n".format(multi_name[0], correct_count, count))
                         appearance_text = mult_choice[0].appearance
-                        text_loops = math.floor(len(appearance_text)/80)
                         appearance = ''
                         wrap_length = 80
                         if len(appearance_text)>wrap_length:
                             appearance = "Appearance: \n"
                             appearance += wrap_text(appearance_text, wrap_length=wrap_length)
                             window_study['-Appearance-'].update(value=appearance)
+                            window_study['-Appearance-'].update(value=appearance)
                         else:
                             window_study['-Appearance-'].update(value="Appearance: \n" + appearance_text + "\n")
-                        window_study['-Distinguishing Feature-'].update(value="Distinguishing Features: " + "\n" + mult_choice[0].dist_feats)
+                        window_study['-Distinguishing Feature-'].update(value="\nDistinguishing Features: " + "\n" + correct_answer.dist_feats)
                         window_study['-Appearance-'].update(visible = True)
                         window_study['-Distinguishing Feature-'].update(visible = True)
         window_study.close()
