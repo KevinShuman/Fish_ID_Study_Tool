@@ -6,6 +6,23 @@ from PIL import Image, ImageOps
 import math
 import csv
 from pathlib import Path
+import time
+
+def wrap_text(text, wrap_length=80):
+    wrapped_text = ''
+    if len(text)>wrap_length:
+        while text != "":
+            if len(text) > wrap_length:
+                if text[wrap_length-1].isalnum() and text[wrap_length].isalnum():
+                    word_index = text[0:wrap_length-1].rfind(' ')
+                else:
+                    word_index = wrap_length
+                wrapped_text += text[0:word_index] + "\n"
+                text = text[word_index:]
+            else: 
+                wrapped_text += text
+                text = ''
+    return wrapped_text
 
 def select_random_Ns(lst, n):
     random.shuffle(lst)
@@ -303,7 +320,7 @@ class Study_Session:
                 if event == '-Submit-':
                     count += 1
                     answer = values['-Species Input-'].lower()
-
+                    import sys
                     # Checks if your answer is correct
                     if answer == correct_answer.name.lower():
                         correct_count += 1
@@ -312,17 +329,15 @@ class Study_Session:
                         end_game = True
                     if answer != correct_answer.name.lower():
                         print("Nope! The correct answer is {}. {}/{}\n".format(correct_answer.name, correct_count, count))
-
                         # If you are wrong, we get a prompt that tells us info about the species to help us learn
                         appearance_text = correct_answer.appearance
                         text_loops = math.floor(len(appearance_text)/80)
-
-                        if len(appearance_text)>80:
+                        appearance = ''
+                        wrap_length = 80
+                        if len(appearance_text)>wrap_length:
                             appearance = "Appearance: \n"
-                            appearance = appearance + appearance_text[0:80] + "\n"
-                            for i in range(1,text_loops):
-                                appearance = appearance + appearance_text[i*80:(i+1)*80] + "\n"
-                            appearance = appearance + appearance_text[text_loops*80:] + "\n"
+                            appearance += wrap_text(appearance_text, wrap_length=wrap_length)
+                            window_study['-Appearance-'].update(value=appearance)
                             window_study['-Appearance-'].update(value=appearance)
                         else:
                             window_study['-Appearance-'].update(value="Appearance: \n" + appearance_text + "\n")
@@ -367,13 +382,11 @@ class Study_Session:
                         print("Nope! The correct answer is {}. {}/{}\n".format(multi_name[0], correct_count, count))
                         appearance_text = mult_choice[0].appearance
                         text_loops = math.floor(len(appearance_text)/80)
-
-                        if len(appearance_text)>80:
+                        appearance = ''
+                        wrap_length = 80
+                        if len(appearance_text)>wrap_length:
                             appearance = "Appearance: \n"
-                            appearance = appearance + appearance_text[0:80] + "\n"
-                            for i in range(1,text_loops):
-                                appearance = appearance + appearance_text[i*80:(i+1)*80] + "\n"
-                            appearance = appearance + appearance_text[text_loops*80:] + "\n"
+                            appearance += wrap_text(appearance_text, wrap_length=wrap_length)
                             window_study['-Appearance-'].update(value=appearance)
                         else:
                             window_study['-Appearance-'].update(value="Appearance: \n" + appearance_text + "\n")
