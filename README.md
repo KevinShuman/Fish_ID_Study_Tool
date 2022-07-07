@@ -97,3 +97,7 @@ Looking at the grab_groups_species() and read_species_csv() functions in the Stu
 -~~The images changing size is kind of distracting, it would be nice to keep things static, though we don't want to mess with image quality~~
 
 -More unique images using a webscapper
+
+-Add details on the wrong answer as well. Need to flag options that are misspelled or blank and show nothing.
+
+-Add reset button that resets your score, so if you want to switch from one group to another or just start over.
