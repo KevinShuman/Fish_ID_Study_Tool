@@ -101,3 +101,5 @@ Looking at the grab_groups_species() and read_species_csv() functions in the Stu
 -Add details on the wrong answer as well. Need to flag options that are misspelled or blank and show nothing.
 
 -Add reset button that resets your score, so if you want to switch from one group to another or just start over.
+
+-Different displays have different resolutions, so we need to adjust the image resizing to fit a person's display resolution
